@@ -15,9 +15,21 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
     print(f'Logged in as {client.user}')
+    
+    # Debugging: Check if THREAD_ID is valid
+    print(f"Fetching thread with ID: {THREAD_ID}")
+    
     # Get the thread to send the reminder
     channel = client.get_channel(int(THREAD_ID))
-    await channel.send("Reminder: Please submit your standup updates!")
+
+    # Debugging: Check if channel was fetched correctly
+    if channel is None:
+        print("Error: Channel not found. Please check THREAD_ID.")
+    else:
+        await channel.send("Reminder: Please submit your standup updates!")
+
+    # Close the bot after sending the message
+    await client.close()
 
 # Run the bot
 client.run(DISCORD_TOKEN)
